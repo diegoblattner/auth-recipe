@@ -1,8 +1,8 @@
 import db, { type User } from "../db";
+import { createHash } from "node:crypto";
 
 function hashPassword(password: string) {
-  // TODO implement a hash functionality
-  return password.split("").reverse().join("");
+  return createHash("sha256").update(password).digest('hex');
 }
 
 export function findUser(email: string, password: string) {

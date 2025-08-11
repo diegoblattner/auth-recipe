@@ -11,3 +11,11 @@ npm run dev
 ```
 open http://localhost:3000
 ```
+
+
+## TODOS
+
+[] forgot password flow (UI, signed token)
+[] view user
+[] view roles
+[] assign roles to user
