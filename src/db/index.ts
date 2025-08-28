@@ -24,10 +24,20 @@ export type GroupUsers = {
   roles: Role[];
 };
 
+export type AuthToken = {
+  id: string;
+  reason: "signUp" | "updatePassword";
+  requestedBy: string;
+  timestamp: number;
+  expiresAt: number;
+  used: boolean;
+}
+
 type DB = {
   users: User[];
   groups: Group[];
   groupUsers: GroupUsers[];
+  authTokens: AuthToken[];
 };
 
 const db: DB = {
@@ -39,6 +49,7 @@ const db: DB = {
   ],
   groups: [],
   groupUsers: [],
+  authTokens: [],
 };
 
 export default db;

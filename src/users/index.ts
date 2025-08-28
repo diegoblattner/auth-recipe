@@ -12,6 +12,12 @@ export function findUser(email: string, password: string) {
   return user ?? null;
 }
 
+export function findUserByEmail(email: string) {
+  const user = db.users.find((u) => u.email === email);
+  
+  return user ?? null;
+}
+
 type DataReturn<T> = {
   data?: T;
   error?: string;
@@ -38,4 +44,14 @@ export function createUser(user: User): DataReturn<User> {
   return {
     data: newUser,
   };
+}
+
+export function updatePassword(userId: string, newPassword: string): DataReturn<boolean> {
+  const user = db.users.find((u) => u.id === userId);
+
+  if (!user) return { error: "invalid user" };
+
+  user.password = hashPassword(newPassword);
+
+  return { data: true };
 }

@@ -1,11 +1,15 @@
 import db, {} from "../db";
+import { createHash } from "node:crypto";
 function hashPassword(password) {
-    // TODO implement a hash functionality
-    return password.split("").reverse().join("");
+    return createHash("sha256").update(password).digest('hex');
 }
 export function findUser(email, password) {
     const hashedPassword = hashPassword(password);
     const user = db.users.find((u) => u.email === email && u.password === hashedPassword);
+    return user ?? null;
+}
+export function findUserByEmail(email) {
+    const user = db.users.find((u) => u.email === email);
     return user ?? null;
 }
 export function createUser(user) {
@@ -25,4 +29,11 @@ export function createUser(user) {
     return {
         data: newUser,
     };
+}
+export function updatePassword(userId, newPassword) {
+    const user = db.users.find((u) => u.id === userId);
+    if (!user)
+        return { error: "invalid user" };
+    user.password = hashPassword(newPassword);
+    return { data: true };
 }

@@ -1,9 +1,9 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
-import { findUser } from "./users";
+import { findUser, findUserByEmail } from "./users";
 import { MemorySession } from "./memorySession";
-import { LoginPage } from "./views/auth";
+import { ForgotPasswordPage, LoginPage, ResetPasswordPage } from "./views/auth";
 const app = new Hono();
 const memorySession = new MemorySession();
 app.use((c, next) => {
@@ -113,6 +113,97 @@ app.on(["GET", "POST"], "/logout", (c) => {
     }
     else {
         return c.redirect("/login");
+    }
+});
+function getPasswordResetToken(token) {
+    const valid = true; // TODO validate token
+    if (!valid)
+        return;
+    return {
+        token: "",
+        email: "",
+    };
+}
+app.get("/forgot-password", (c) => {
+    return c.html(ForgotPasswordPage({ email: "", link: "" }));
+});
+app.post("/forgot-password", async (c) => {
+    const formData = await c.req.formData();
+    const email = (formData.get("email") ?? "");
+    let link = "";
+    const user = findUserByEmail(email);
+    if (user) {
+        link = "/reset-password/TODO-make-link-hash";
+    }
+    return c.html(ForgotPasswordPage({ email, link }));
+});
+app.get("/reset-password/:token", (c) => {
+    const token = c.req.param('token');
+    const tokenData = getPasswordResetToken(token);
+    if (tokenData) {
+        return c.html(ResetPasswordPage({
+            token,
+            email: "",
+            password: "",
+            passwordConfirm: ""
+        }));
+    }
+    else {
+        return c.html("invalid token");
+    }
+});
+app.post("/reset-password/:token", async (c) => {
+    const token = c.req.param('token');
+    const formData = await c.req.formData();
+    const tokenData = getPasswordResetToken(token);
+    const email = (formData.get("email") ?? "");
+    const password = (formData.get("password") ?? "");
+    const passwordConfirm = (formData.get("passwordConfirm") ?? "");
+    let tokenError = "";
+    let emailError = "";
+    let passwordError = "";
+    let passwordConfirmError = "";
+    if (!tokenData) {
+        tokenError = "invalid token";
+    }
+    if (tokenData?.email !== email) {
+        emailError = "incorrect email address";
+    }
+    if (password != passwordConfirm) {
+        passwordConfirmError = "passwords don't match";
+    }
+    if (!tokenError && !emailError && !passwordError && !passwordConfirmError) {
+        if (isJSON(c)) {
+            return c.json({ message: "success" });
+        }
+        else {
+            // Success page?
+            return c.redirect("/login");
+        }
+    }
+    else {
+        if (isJSON(c)) {
+            return c.html(ResetPasswordPage({
+                token,
+                email: "",
+                password: "",
+                passwordConfirm: ""
+            }));
+        }
+        else {
+            return c.html(ResetPasswordPage({
+                token,
+                email,
+                password,
+                passwordConfirm,
+                error: {
+                    email: emailError,
+                    password: passwordError,
+                    passwordConfirm: passwordConfirmError,
+                    global: tokenError,
+                }
+            }));
+        }
     }
 });
 // serve with node:

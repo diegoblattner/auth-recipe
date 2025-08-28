@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
 		// Ignore module structure
-		"module": "Preserve",
+		"module": "esnext",
+    "moduleResolution": "bundler",
 
 		// Allow JSON modules to be imported
 		"resolveJsonModule": true,
