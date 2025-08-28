@@ -2,8 +2,9 @@
   "name": "auth-recipe",
   "type": "module",
   "scripts": {
+    "prepare": "npx ts-patch install -s",
     "dev": "tsx watch src/index.ts",
-    "build": "rm -r dist && tsc",
+    "build": "rm -f dist && tsc",
     "start": "node dist/index.js"
   },
   "dependencies": {
@@ -14,7 +15,9 @@
   },
   "devDependencies": {
     "@types/node": "^20.19.9",
+    "ts-patch": "^3.3.0",
     "tsx": "^4.20.3",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "typescript-transform-paths": "^3.5.5"
   }
 }

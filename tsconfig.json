@@ -30,7 +30,26 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     /* If your code doesn't run in the DOM: */
-    "lib": ["es2022"]
+    "lib": ["es2022"],
+    "paths":{
+      "@db": ["./src/db/index.ts"],
+      "@db/*": ["./src/db/*"],
+      "@utils": ["./src/utils.ts"],
+      "@utils/*": ["./src/utils/*"],
+      "@views/*": ["./src/views/*"]
+    }
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  /* List of language service plugins */
+  "plugins":[
+      /* Transform paths in output .js files */
+      {
+        "transform":"typescript-transform-paths"
+      },
+      /* Transform paths in output .d.ts files */
+      {
+        "transform":"typescript-transform-paths",
+        "afterDeclarations": true
+      }
+  ]
 }

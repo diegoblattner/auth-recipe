@@ -1,4 +1,4 @@
-import db, { type User } from "../db";
+import db, { type User } from "@db";
 import { createHash } from "node:crypto";
 
 function hashPassword(password: string) {

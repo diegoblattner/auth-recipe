@@ -6,5 +6,10 @@ export function readFileAsString(path: string): string {
 }
 
 export function generateRandomToken(size: number = 6): string {
-  return new Array(size).fill(0).map(() => Math.floor(Math.random() * 10)).join("");
+  const output = new Array(size);
+  while (size > 0) {
+    output[size - 1] = Math.floor(Math.random() * 10);
+    size--;
+  }
+  return output.join("");
 }
