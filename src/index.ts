@@ -1,5 +1,4 @@
-import { serve } from "@hono/node-server"
-import { Hono, type Context } from "hono"
+import { Hono, type Context } from "hono";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
 import { findUser, findUserByEmail } from "./users";
 import { MemorySession } from "./memorySession";
@@ -250,17 +249,15 @@ app.post("/reset-password/:token", async (c) => {
   }
 });
 
+export default { 
+  port: 3000, 
+  fetch: app.fetch, 
+} 
 
 // serve with node:
-serve({
-  fetch: app.fetch,
-  port: 3000
-}, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
-})
-
-// // serve with bun:
-// export default { 
-//   port: 3000, 
-//   fetch: app.fetch, 
-// } 
+// serve({
+//   fetch: app.fetch,
+//   port: 3000
+// }, (info) => {
+//   console.log(`Server is running on http://localhost:${info.port}`)
+// })

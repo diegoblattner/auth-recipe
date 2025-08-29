@@ -1,21 +1,27 @@
 A tiny authentication recipe, with basic session management.
 Main libs used: Hono, Handlebars
 
-Requires nodejs >= 18
+Requires bun >= 1.0
 
 ```
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 ```
-open http://localhost:3000
+browse http://localhost:3000
 ```
 
 
 ## TODOS
 
-[] forgot password flow (UI, signed token)
-[] view user
-[] view roles
-[] assign roles to user
+- [ ] forgot password flow (UI, signed token)
+
+- [ ] verify email
+
+- [ ] view user
+
+- [ ] view roles
+
+- [ ] assign roles to user
+
